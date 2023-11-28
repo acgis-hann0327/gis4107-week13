@@ -6,7 +6,7 @@
 #              attributes and calls the method to download and save a
 #              response to a RESTful request to a file
 #
-# Author:      Your name(s)
+# Author:      Brigitte and Lizan
 #
 # Created:     dd/mm/yyyy
 # ------------------------------------------------------------------------------

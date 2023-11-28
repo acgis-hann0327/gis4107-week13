@@ -6,7 +6,7 @@
 #              attributes and calls the method to download and save a
 #              response to a RESTful request to a file
 #
-# Author:      Your name(s)
+# Author:      Brigitte and Lizan
 #
 # Created:     dd/mm/yyyy
 # ------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ def main():
     # Based on the value of status, if the file downloaded successfully,
     # print "Download successful to wsd.out_json_filename"
     # If the file did not download successfully, print the status value
-    if status == 200:
+    if status == 'OK':
         print("Download successful to wsd.out_json_filename")
     else:
         print(status)

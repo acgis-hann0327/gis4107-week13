@@ -85,3 +85,8 @@ def test_json_to_kmz():
     assert kmz_size < kml_size
     assert kmz_size > 10000
     # os.startfile(wsc.out_kml_filename.replace('kml', 'kmz'))
+
+def test_get_sampling_frequencies():
+    actual = wsc.get_sampling_frequencies()[0][1]
+    expected = 682
+    assert expected == actual

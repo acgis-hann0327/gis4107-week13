@@ -26,7 +26,7 @@
 #   Items enclosed by { } are the keys in the dictionary associated with
 #   each feature (a key:value dictionary of values).
 #
-# Author:      Your name(s)
+# Author:      Brigitte and Lizan
 #
 # Created:     dd/mm/yyyy
 # ------------------------------------------------------------------------------
@@ -153,3 +153,55 @@ def get_placemark(name, longitude, latitude, wateroffice_link):
     global pm_fmt
     kml = pm_fmt.format(name, wateroffice_link, longitude, latitude)
     return kml.encode("utf-8")
+
+def get_sampling_frequencies():
+
+    water_stns = load_json_file_to_dict()
+
+    features_list = water_stns['features']
+
+    sampling_frequency_list = []
+
+    for feature in features_list:
+        sampling_frequency = feature['attributes']['Sampling_Frequency']
+        sampling_frequency_list.append(sampling_frequency)
+    
+    unique_keys = []
+
+    for feature in sampling_frequency_list:
+        if feature not in unique_keys:
+            unique_keys.append(feature)
+    
+    initial_value = 0
+    sampling_to_count = dict.fromkeys(unique_keys, initial_value)
+
+    for key in sampling_to_count:
+       sampling_count = sampling_frequency_list.count(key)
+       sampling_to_count[key] = sampling_count
+    
+    unique_items_list = []
+
+    for item in sampling_to_count.items():
+        unique_items_list.append(item)
+    
+    return unique_items_list
+
+
+   # sampling_frequency_list_duplicate = sampling_frequency_list[:]
+
+    #final_list = []
+
+    # count = 0
+    # for feature in sampling_frequency_list_duplicate:
+    #     if feature == feature[0]:
+    #         count+=1 
+    #     frequency_tuple = (feature[0], count)
+    #     final_list.append(frequency_tuple)
+
+            
+
+
+
+
+
+
