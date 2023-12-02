@@ -155,32 +155,38 @@ def get_placemark(name, longitude, latitude, wateroffice_link):
     return kml.encode("utf-8")
 
 def get_sampling_frequencies():
-
+    # dictionary extracted from the json file
     water_stns = load_json_file_to_dict()
-
     features_list = water_stns['features']
-
     sampling_frequency_list = []
 
+    # extracting the text of sampling_frecuency from each feature and appending to a list
     for feature in features_list:
         sampling_frequency = feature['attributes']['Sampling_Frequency']
+        # the list contains all the frecuencies with duplications
         sampling_frequency_list.append(sampling_frequency)
     
     unique_keys = []
 
+    # Extracting the unique values of frequency and appending them to a list
     for feature in sampling_frequency_list:
         if feature not in unique_keys:
             unique_keys.append(feature)
     
+    # creating a dict with the unique values of frequency extracted previously as the keys
     initial_value = 0
     sampling_to_count = dict.fromkeys(unique_keys, initial_value)
 
+    # iterating through each unique value of frequency
     for key in sampling_to_count:
+       # counting the number of times the value of frequency is in the list that containg all the values with duplicates
        sampling_count = sampling_frequency_list.count(key)
+       # adding the count as the value to the key in the dictionay
        sampling_to_count[key] = sampling_count
     
     unique_items_list = []
 
+    # creating a list of tuples with the previous dictionary
     for item in sampling_to_count.items():
         unique_items_list.append(item)
     
