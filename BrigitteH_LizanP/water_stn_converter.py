@@ -185,19 +185,6 @@ def get_sampling_frequencies():
         unique_items_list.append(item)
     
     return unique_items_list
-
-
-   # sampling_frequency_list_duplicate = sampling_frequency_list[:]
-
-    #final_list = []
-
-    # count = 0
-    # for feature in sampling_frequency_list_duplicate:
-    #     if feature == feature[0]:
-    #         count+=1 
-    #     frequency_tuple = (feature[0], count)
-    #     final_list.append(frequency_tuple)
-
             
 
 

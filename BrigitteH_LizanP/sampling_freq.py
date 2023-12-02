@@ -16,12 +16,3 @@ def create_sampling_report(in_json_filename, out_csv_filename):
         writer.writerow(header)
         for row in rows:
             writer.writerow(row)
-
-
-
-    # with open(in_json_filename) as infile:
-    #     header = infile.readline()
-    #     with open(out_csv_filename, 'w') as outfile:
-    #         outfile.write(header)
-    #         for line in infile:
-    #             outfile.write(line)
