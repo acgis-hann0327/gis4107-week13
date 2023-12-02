@@ -12,6 +12,7 @@
 import csv
 import water_stn_converter as wsc
 import os
+import water_stn_downloader as wsd
 
 wsc.in_json_filename = r'data\water_stn.json'
 wsc.out_kml_filename = r'data\water_stn.kml'
@@ -87,6 +88,14 @@ def test_json_to_kmz():
     # os.startfile(wsc.out_kml_filename.replace('kml', 'kmz'))
 
 def test_get_sampling_frequencies():
-    actual = wsc.get_sampling_frequencies()[0][1]
     expected = 682
+    known_file_name = 'data\water_stn.json'
+    if os.path.exists(known_file_name) == True:
+        actual = wsc.get_sampling_frequencies()[0][1]
+    else:
+        wsd.out_json_filename = known_file_name
+        wsd.url = 'https://maps-cartes.ec.gc.ca/arcgis/rest/services/CESI_FGP_All_Layers/MapServer/6/query'
+        wsd.params = {'f':'json', 'where': 'OBJECTID>0', 'outFields': '*'}
+        wsd.download_to_file()
+        actual = wsc.get_sampling_frequencies()[0][1]  
     assert expected == actual
