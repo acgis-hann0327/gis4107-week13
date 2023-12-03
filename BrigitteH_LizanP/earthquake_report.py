@@ -80,7 +80,6 @@ def atom_to_csv(atom_file, out_csv_file):
 
     # Creating a dictionary that will serve as a basis for the csv file
     dict_count_earthquakes = {'<1.0':count_magnitude_less_1, '>1.0-2.5':count_magnitude_between_1_and_2_5, '>2.5-4.5':count_magnitude_between_2_5_and_4_5, '>4.5+':count_magnitude_greater_4_5}
-    print(dict_count_earthquakes)
 
     # Creating the magnitude count csv
     with open(out_csv_file, 'w', newline = '') as outfile:
