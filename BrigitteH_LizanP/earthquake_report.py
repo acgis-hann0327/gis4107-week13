@@ -44,16 +44,16 @@ def parse_earthquake_report(atom_file):
 
     return list_of_earthquakes
 
-def atom_to_csv(atom_file, out_csv_file):
-    # Creating a list of magnitudes for each earthquake in atom_file
-    parsed_dict = feedparser.parse(atom_file)
-    list_magnitude_earthquake = []
-    for entry in parsed_dict.entries:
-        title = entry['title']
-        list_title = title.split(' - ')
-        magnitude_earthquake = list_title[0].split()
-        magnitude_earthquake_values = float(magnitude_earthquake[1])
-        list_magnitude_earthquake.append(magnitude_earthquake_values)    
+
+def create_earthquake_report(in_atom_file, out_csv_file):
+    # Creating a list of magnitudes for each earthquake in atom_file using parse_earthquake_report_function
+    list_of_earthquakes = list(parse_earthquake_report(in_atom_file))
+    list_magnitude_earthquakes = []
+    count = 0
+    for magnitude in list_of_earthquakes:
+        magnitude = list_of_earthquakes[count][0]
+        list_magnitude_earthquakes.append(magnitude)
+        count += 1
 
     # Creating 4 empty lists for each magnitude condition 
     magnitude_less_1 = []
@@ -62,7 +62,7 @@ def atom_to_csv(atom_file, out_csv_file):
     magnitude_greater_4_5 = []
 
     # Looping through each magnitude in the list of magnitudes and appending the magnitude values that meet a condition to the list for that condition
-    for magnitude in list_magnitude_earthquake:
+    for magnitude in list_magnitude_earthquakes:
         if magnitude <= 1.0:
             magnitude_less_1.append(magnitude)
         elif 1.0 < magnitude <= 2.5:
@@ -84,9 +84,11 @@ def atom_to_csv(atom_file, out_csv_file):
     # Creating the magnitude count csv
     with open(out_csv_file, 'w', newline = '') as outfile:
         writer = csv.writer(outfile)
-        writer.writerow(dict_count_earthquakes.keys())
-        writer.writerow(dict_count_earthquakes.values())
-        
+        header = ['Magnitude', 'Count']
+        writer.writerow(header)
+        for element in dict_count_earthquakes.items():
+            writer.writerow(element)
+
 def write_kml(in_atom_filename, out_kml_filename):
     list_of_tuples_earthquakes = parse_earthquake_report(in_atom_filename)
     with open (out_kml_filename, 'w') as kml_file:

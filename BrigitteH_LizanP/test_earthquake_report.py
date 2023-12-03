@@ -14,13 +14,13 @@ def test_parse_earthquake_report():
     expected = '68 km NE of Barcelona, Philippines'
     assert expected == actual
 
-def test_atom_to_csv():
-    expected = ['<1.0,>1.0-2.5,>2.5-4.5,>4.5+\n', '2871,4932,1106,482\n']
-    atom_file = r'data\\earthquake_data.atom'
-    out_csv_file = r'data\\magnitude_count.atom'
+def test_create_earthquake_report():
+    expected = ['Magnitude,Count\n','<1.0,2871\n','>1.0-2.5,4932\n','>2.5-4.5,1106\n','>4.5+,482\n']
+    in_atom_file = r'data\\earthquake_data.atom'
+    out_csv_file = r'data\\magnitude_count.csv'
     #This function will check for local file and if it is not found will retrieve data from live server feed
-    er.get_earthquake_data(atom_file)
-    er.atom_to_csv(atom_file, out_csv_file)
+    er.get_earthquake_data(in_atom_file)
+    er.create_earthquake_report(in_atom_file, out_csv_file)
     with open(out_csv_file) as outfile:
       actual = outfile.readlines()
     assert expected == actual
