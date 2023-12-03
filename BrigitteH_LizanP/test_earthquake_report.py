@@ -18,12 +18,14 @@ def test_parse_earthquake_data():
     assert expected == actual
 
 def test_create_earthquake_report():
-    expected = ['Magnitude,Count\n','<1.0,2871\n','>1.0-2.5,4932\n','>2.5-4.5,1106\n','>4.5+,482\n']
+    expected = ['Magnitude,Count\n','<1.0,2886\n','>1.0-2.5,4940\n','>2.5-4.5,1111\n','>4.5+,466\n']
     in_atom_file = r'data\\earthquake_data.atom'
     out_csv_file = r'data\\magnitude_count.csv'
-    #This function will check for local file and if it is not found will retrieve data from live server feed
-    er.get_earthquake_data(in_atom_file)
-    er.create_earthquake_report(in_atom_file, out_csv_file)
+    if os.path.exists(in_atom_file) == True:
+        er.create_earthquake_report(in_atom_file, out_csv_file)
+    else:
+        er.get_earthquake_data(in_atom_file)
+        er.create_earthquake_report(in_atom_file, out_csv_file)
     with open(out_csv_file) as outfile:
       actual = outfile.readlines()
     assert expected == actual
@@ -33,12 +35,12 @@ def test_write_kml():
 <kml xmlns="http://www.opengis.net/kml/2.2">
 <Document>
   <Placemark>
-    <name>Magnitude: 1.7</name>
-    <description>Location: Central Alaska
-Latitude: 63.2737
-Longitude: -149.3227</description>
+    <name>Magnitude: 5.2</name>
+    <description>Location: 68 km NE of Barcelona, Philippines
+Latitude: 8.5186
+Longitude: 126.946</description>
     <Point>
-      <coordinates>-149.3227,63.2737,0</coordinates>
+      <coordinates>126.946,8.5186,0</coordinates>
     </Point>
   </Placemark>"""
     in_atom_filename = 'data\earthquake_data.atom'
@@ -46,8 +48,8 @@ Longitude: -149.3227</description>
     er.write_kml(in_atom_filename, out_kml_filename)
     with open(out_kml_filename) as infile:
         kml = infile.read()
-        actual = kml[:kml.find('/Placemark') + 11]
-    assert expected == actual
+        actual = kml[:kml.find('/Placemark') + 1]
+    assert actual == expected
     
     script_folder = os.path.dirname(os.path.abspath(__file__))
     earthquake_data_kml = os.path.join(script_folder, out_kml_filename)
