@@ -38,7 +38,7 @@ def parse_earthquake_report(atom_file):
         magnitude_earthquake = float(list_magnitude_earthquake[1])
         description_of_location = list_title[1]
         tuple_earthquakes_data = (magnitude_earthquake, description_of_location, latitude, longitude)
-        # List of tuples with the information of each eartquake!!!
+        # List of tuples with the information of each earthquake!!!
         list_of_earthquakes.append(tuple_earthquakes_data)
 
     return list_of_earthquakes
@@ -54,6 +54,4 @@ def parse_earthquake_report(atom_file):
     # # creating the dictionary with the unique count of the number of earthquakes in each classification bin
     # dict_count_earthquakes = {'<1.0':count_magnitude_minor_1, '>1.0-2.5':count_magnitude_between_1_and_2_5, '>2.5-4.5':count_magnitude_between_2_5_and_4_5, '>4.5+':count_magnitude_greater_4_5}
         
-
-
 
