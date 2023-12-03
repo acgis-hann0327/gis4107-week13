@@ -2,6 +2,7 @@ import requests
 from requests import HTTPError
 import os
 import feedparser
+import water_stn_converter as wsc
 
 def get_earthquake_data(out_atom_filename):
     url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.atom'
@@ -54,6 +55,31 @@ def parse_earthquake_report(atom_file):
     # # creating the dictionary with the unique count of the number of earthquakes in each classification bin
     # dict_count_earthquakes = {'<1.0':count_magnitude_minor_1, '>1.0-2.5':count_magnitude_between_1_and_2_5, '>2.5-4.5':count_magnitude_between_2_5_and_4_5, '>4.5+':count_magnitude_greater_4_5}
         
+def write_kml(in_atom_filename, out_kml_filename):
+    list_of_tuples_earthquakes = parse_earthquake_report(in_atom_filename)
+    with open (out_kml_filename, 'w') as kml_file:
+        kml_file.write(wsc.get_kml_header())
+        for earthquake_event in list_of_tuples_earthquakes:
+            magnitude_earthquake = earthquake_event[0]
+            description_location = earthquake_event[1]
+            latitude = earthquake_event[2]
+            longitude = earthquake_event[3]
+            kml_file.write(get_placemark(magnitude_earthquake, description_location, longitude, latitude))
+        kml_file.write(wsc.get_kml_footer())
+        kml_file.close
 
+# Placemark format string for KML Placemark elements
+pm_fmt = u"""
+  <Placemark>
+    <name>Magnitude: {}</name>
+    <description>Location: {}\nLatitude: {}\nLongitude: {}</description>
+    <Point>
+      <coordinates>{},{},0</coordinates>
+    </Point>
+  </Placemark>"""
 
-
+def get_placemark(magnitude, description, longitude, latitude):
+    """Return the KML Placemark element including start and end tags.
+    """
+    kml = pm_fmt.format(magnitude, description, latitude, longitude, longitude, latitude)
+    return kml
