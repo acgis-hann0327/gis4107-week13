@@ -3,6 +3,7 @@ from requests import HTTPError
 import os
 import feedparser
 import water_stn_converter as wsc
+import csv
 
 def get_earthquake_data(out_atom_filename):
     url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.atom'
@@ -42,18 +43,50 @@ def parse_earthquake_report(atom_file):
         list_of_earthquakes.append(tuple_earthquakes_data)
 
     return list_of_earthquakes
-    #     # List with the magnitude of each earthquake (this list will be used to calculate the number of earthquakes within each USGS range)
-    #     list_of_magnitude.append(magnitude_earthquake)
 
-    # # calculating the count of each classification bin
-    # count_magnitude_minor_1 = sum(1 for magnitude in list_of_magnitude if magnitude < 1.0)
-    # count_magnitude_between_1_and_2_5 = sum(1 for magnitude in list_of_magnitude if 1.0 <= magnitude < 2.5)
-    # count_magnitude_between_2_5_and_4_5 = sum(1 for magnitude in list_of_magnitude if 2.5 <= magnitude < 4.5)
-    # count_magnitude_greater_4_5 = sum(1 for magnitude in list_of_magnitude if magnitude >= 4.5)
+def atom_to_csv(atom_file, out_csv_file):
+    # Creating a list of magnitudes for each earthquake in atom_file
+    parsed_dict = feedparser.parse(atom_file)
+    list_magnitude_earthquake = []
+    for entry in parsed_dict.entries:
+        title = entry['title']
+        list_title = title.split(' - ')
+        magnitude_earthquake = list_title[0].split()
+        magnitude_earthquake_values = float(magnitude_earthquake[1])
+        list_magnitude_earthquake.append(magnitude_earthquake_values)    
 
-    # # creating the dictionary with the unique count of the number of earthquakes in each classification bin
-    # dict_count_earthquakes = {'<1.0':count_magnitude_minor_1, '>1.0-2.5':count_magnitude_between_1_and_2_5, '>2.5-4.5':count_magnitude_between_2_5_and_4_5, '>4.5+':count_magnitude_greater_4_5}
-        
+    # Creating 4 empty lists for each magnitude condition 
+    magnitude_less_1 = []
+    magnitude_between_1_and_2_5 = []
+    magnitude_between_2_5_and_4_5 = []
+    magnitude_greater_4_5 = []
+
+    # Looping through each magnitude in the list of magnitudes and appending the magnitude values that meet a condition to the list for that condition
+    for magnitude in list_magnitude_earthquake:
+        if magnitude <= 1.0:
+            magnitude_less_1.append(magnitude)
+        elif 1.0 < magnitude <= 2.5:
+            magnitude_between_1_and_2_5.append(magnitude)
+        elif 2.5 < magnitude <= 4.5:
+            magnitude_between_2_5_and_4_5.append(magnitude)
+        elif magnitude > 4.5:
+            magnitude_greater_4_5.append(magnitude)
+    
+    # Measuring the unique count of the number of earthquakes in each classification bin
+    count_magnitude_less_1 = len(magnitude_less_1)
+    count_magnitude_between_1_and_2_5 = len(magnitude_between_1_and_2_5)
+    count_magnitude_between_2_5_and_4_5 = len(magnitude_between_2_5_and_4_5)
+    count_magnitude_greater_4_5 = len(magnitude_greater_4_5)
+
+    # Creating a dictionary that will serve as a basis for the csv file
+    dict_count_earthquakes = {'<1.0':count_magnitude_less_1, '>1.0-2.5':count_magnitude_between_1_and_2_5, '>2.5-4.5':count_magnitude_between_2_5_and_4_5, '>4.5+':count_magnitude_greater_4_5}
+    print(dict_count_earthquakes)
+
+    # Creating the magnitude count csv
+    with open(out_csv_file, 'w', newline = '') as outfile:
+        writer = csv.writer(outfile)
+        writer.writerow(dict_count_earthquakes.keys())
+        writer.writerow(dict_count_earthquakes.values())
         
 def write_kml(in_atom_filename, out_kml_filename):
     list_of_tuples_earthquakes = parse_earthquake_report(in_atom_filename)
