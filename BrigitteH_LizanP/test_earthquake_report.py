@@ -48,10 +48,10 @@ Longitude: 126.946</description>
     er.write_kml(in_atom_filename, out_kml_filename)
     with open(out_kml_filename) as infile:
         kml = infile.read()
-        actual = kml[:kml.find('/Placemark') + 1]
+        actual = kml[:kml.find('/Placemark') + 11]
     assert actual == expected
     
     script_folder = os.path.dirname(os.path.abspath(__file__))
     earthquake_data_kml = os.path.join(script_folder, out_kml_filename)
-    os.startfile(earthquake_data_kml)
+    # os.startfile(earthquake_data_kml)
     
