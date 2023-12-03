@@ -2,7 +2,6 @@ import water_stn_converter as wsc
 import csv
 
 
-
 def create_sampling_report(in_json_filename, out_csv_filename):
     wsc.in_json_filename = in_json_filename
     wsc.out_csv_filename = out_csv_filename 

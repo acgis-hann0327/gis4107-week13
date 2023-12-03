@@ -9,7 +9,7 @@ def test_get_earthquake_data():
     assert expected == actual
 
 def test_parse_earthquake_report():
-    atom_file = 'data\earthquake_data_copy.atom'
-    actual = er.parse_earthquake_report(atom_file)
-    expected = 0
+    atom_file = 'data\earthquake_data.atom'
+    actual = er.parse_earthquake_report(atom_file)[0][1]
+    expected = '68 km NE of Barcelona, Philippines'
     assert expected == actual

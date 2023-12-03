@@ -10,6 +10,6 @@ def test_create_sampling_report():
         header = next(reader)
         for row in reader:
             if row[0] == 'Yearly':
-                actual =  row[1]
+                actual = row[1]
     expected = '682'
     assert actual == expected
