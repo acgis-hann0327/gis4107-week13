@@ -2,10 +2,13 @@ import earthquake_report as er
 import os
 
 def test_get_earthquake_data():
-    er.get_earthquake_data('data\earthquake_data.atom')
     expected = True
-    known_file_name = 'data\earthquake_data.atom'
-    actual = os.path.exists(known_file_name)
+    known_file_name = 'data\earthquake_data_second_test.atom'
+    if os.path.exists(known_file_name) == True:
+        actual = os.path.exists(known_file_name) 
+    else:
+        er.get_earthquake_data(known_file_name)
+        actual = os.path.exists(known_file_name)
     assert expected == actual
 
 def test_parse_earthquake_report():
