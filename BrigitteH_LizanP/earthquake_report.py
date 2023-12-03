@@ -24,7 +24,7 @@ def get_earthquake_data(out_atom_filename):
     else:
         return 'OK'
 
-def parse_earthquake_report(atom_file):
+def parse_earthquake_data(atom_file):
     parsed_dict = feedparser.parse(atom_file)
     list_of_earthquakes = []
     # Extracting the values of lat, long, magnitude, and description from the parsed distionary
@@ -45,7 +45,7 @@ def parse_earthquake_report(atom_file):
 
 def create_earthquake_report(in_atom_file, out_csv_file):
     # Creating a list of magnitudes for each earthquake in atom_file using parse_earthquake_report_function
-    list_of_earthquakes = list(parse_earthquake_report(in_atom_file))
+    list_of_earthquakes = list(parse_earthquake_data(in_atom_file))
     list_magnitude_earthquakes = []
     count = 0
     for magnitude in list_of_earthquakes:
@@ -88,7 +88,7 @@ def create_earthquake_report(in_atom_file, out_csv_file):
             writer.writerow(element)
 
 def write_kml(in_atom_filename, out_kml_filename):
-    list_of_tuples_earthquakes = parse_earthquake_report(in_atom_filename)
+    list_of_tuples_earthquakes = parse_earthquake_data(in_atom_filename)
     with open (out_kml_filename, 'w') as kml_file:
         kml_file.write(wsc.get_kml_header())
         for earthquake_event in list_of_tuples_earthquakes:
