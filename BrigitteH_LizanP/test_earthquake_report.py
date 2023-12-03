@@ -15,12 +15,13 @@ def test_parse_earthquake_report():
     assert expected == actual
 
 def test_atom_to_csv():
+    expected = ['<1.0,>1.0-2.5,>2.5-4.5,>4.5+\n', '2871,4932,1106,482\n']
     atom_file = r'data\\earthquake_data.atom'
     out_csv_file = r'data\\magnitude_count.atom'
-    expected = ['<1.0,>1.0-2.5,>2.5-4.5,>4.5+\n', '2871,4932,1106,482\n']
+    er.get_earthquake_data(atom_file)
     er.atom_to_csv(atom_file, out_csv_file)
     with open(out_csv_file) as outfile:
-        actual = outfile.readlines()
+      actual = outfile.readlines()
     assert expected == actual
 
 def test_write_kml():
