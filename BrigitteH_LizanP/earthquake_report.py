@@ -28,7 +28,6 @@ def get_earthquake_data(out_atom_filename):
 def parse_earthquake_report(atom_file):
     parsed_dict = feedparser.parse(atom_file)
     list_of_earthquakes = []
-#    list_of_magnitude = []
     # Extracting the values of lat, long, magnitude, and description from the parsed distionary
     for entry in parsed_dict.entries:
         latitude = entry['where']['coordinates'][1]
